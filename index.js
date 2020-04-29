@@ -13,8 +13,8 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json())
 
 // PDFParser = require("pdf2json");
-// let pdfParser = new PDFParser();     
-//     pdfParser.on("pdfParser_dataReady", pdfData => {        
+// let pdfParser = new PDFParser();
+//     pdfParser.on("pdfParser_dataReady", pdfData => {
 //         console.log(JSON.stringify(pdfParser.getAllFieldsTypes()));
 //     });
 //     pdfParser.loadPDF('./shared/example.pdf');
