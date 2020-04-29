@@ -1,0 +1,214 @@
+doctype html
+html
+  head
+    title Socket pdf anonate
+    |   
+    |   
+    link(rel='stylesheet', type='text/css', href='shared/toolbar.css')
+    |   
+    link(rel='stylesheet', type='text/css', href='shared/pdf_viewer.css')
+    |   
+    script(src='https://cdn.socket.io/socket.io-1.2.0.js')
+    |   
+    script(src='https://code.jquery.com/jquery-1.11.1.js')
+    |   
+    style(type='text/css').
+      body {
+      background-color: #eee;
+      font-family: sans-serif;
+      margin: 0;
+      }
+      .example{
+        margin-left: 100px;
+      }
+      .pdfViewer .canvasWrapper {
+      box-shadow: 0 0 3px #bbb;
+      }
+      .pdfViewer .page {
+      margin-bottom: 10px;
+      }
+      .annotationLayer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      }
+      #content-wrapper {
+      position: absolute;
+      top: 35px;
+      left: 0;
+      right: 0px;
+      bottom: 0;
+      overflow: auto;
+      }
+      #comment-wrapper {
+      position: absolute;
+      top: 35px;
+      right: 0;
+      bottom: 0;
+      overflow: auto;
+      width: 0px;
+      background: #eaeaea;
+      border-left: 1px solid #d0d0d0;
+      }
+      #comment-wrapper h4 {
+      margin: 10px;
+      }
+      #comment-wrapper .comment-list {
+      font-size: 12px;
+      position: absolute;
+      top: 38px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      }
+      #comment-wrapper .comment-list-item {
+      border-bottom: 1px solid #d0d0d0;
+      padding: 10px;
+      }
+      #comment-wrapper .comment-list-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 47px;
+      overflow: auto;
+      }
+      #comment-wrapper .comment-list-form {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 10px;
+      }
+      #comment-wrapper .comment-list-form input {
+      padding: 5px;
+      width: 100%;
+      }
+      .hide{
+        display: none;
+      }
+  |   
+  |   
+  script(src='https://cdn.socket.io/socket.io-1.2.0.js')
+  |   
+  script(src='https://code.jquery.com/jquery-1.11.1.js')
+  |     
+  |   
+  body
+    .toolbar
+      button.cursor(type='button', title='Cursor', data-tooltype='cursor') &#x279A;
+      |       
+      .spacer
+      |       
+      button.rectangle(type='button', title='Rectangle', data-tooltype='area') &nbsp;
+      |       
+      button.circle.hide(type='button', title='Circle', data-tooltype='circle') &cir;
+      |       
+      button.circle.hide(type='button', title='fillCircle', data-tooltype='fillcircle') &#x25C9;
+      |       
+      button.circle.hide(type='button', title='emptyCircle', data-tooltype='emptycircle') &ofcir;
+      // <button class="arrow" type="arrow" title="Arrow" data-tooltype="arrow">➤</button>
+      .hotspot-color.hide
+      |       
+      |       
+      button.highlight.hide(type='button', title='Highlight', data-tooltype='highlight') &nbsp;
+      |       
+      button.strikeout.hide(type='button', title='Strikeout', data-tooltype='strikeout') &nbsp;
+      |       
+      .spacer
+      |       
+      |       
+      button.text.hide(type='button', title='Text Tool', data-tooltype='text')
+      |       
+      select.text-size.hide
+      |       
+      .text-color.hide
+      |
+      button.pen.hide(type='button', title='Pen Tool', data-tooltype='draw') &#x270E;
+      |       
+      select.pen-size.hide
+      |       
+      .pen-color.hide
+      |       
+      // <button class="comment" type="button" title="Comment" data-tooltype="point">🗨</button>
+      // <div class="spacer"></div>
+      select.scale.hide
+        option(value='.5') 50%
+        |         
+        option(value='1') 100%
+        |         
+        option(value='1.33') 133%
+        |         
+        option(value='1.5') 150%
+        |         
+        option(value='2') 200%
+           
+      a.rotate-ccw.hide(href='javascript://', title='Rotate Counter Clockwise') &#x27F2;
+      |       
+      a.rotate-cw.hide(href='javascript://', title='Rotate Clockwise') &#x27F3;
+      |       
+           
+      a.clear(href='javascript://', title='Clear') &times;
+      |       
+      .spacer
+      |       
+      button#download.Download(title='Download') Download
+      |       
+      |       
+      form(method='POST', style='display:none', action='/download')
+        input#input-annotate(type='text', name='annotations')
+        |         
+        input#input-height(type='text', name='pdfheight')
+        |         
+        input#download-button(type='submit', value='submit')
+
+
+      .spacer      
+      select.example
+        option(value='example1.pdf') example1
+        |         
+        option(value='example2.pdf') example2
+        |         
+        option(value='example3.pdf') example3
+        |         
+        option(value='example4.pdf') example4
+        
+    |     
+    |     
+    #content-wrapper
+      #viewer.pdfViewer
+    |     
+    #test
+    |     
+    #comment-wrapper
+      h4 Comments
+      |       
+      .comment-list
+        .comment-list-container
+          .comment-list-item No comments
+        |         
+        form.comment-list-form(style='display:none;')
+          input(type='text', placeholder='Add a Comment')
+    |     
+    script.
+      function getParameterByName(name, url) {
+      if (!url) url = window.location.href;
+      name = name.replace(/[\\[\]]/g, "\\$&");
+      var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+      results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\\+/g, " "));
+      }
+      var pdf = "#{pdf}";      
+    |     
+    script(src='shared/pdf.js')
+    |     
+    script(src='shared/pdf_viewer.js')
+    // <script src="http://localhost:8080/__build__/index.js"></script>
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js')
+    // <script src="npm/twitter-text/twitter-text.js"></script>
+    script(src='shared/app.js')
+    //- script(src='http://localhost:8080/__build__/index.js')
