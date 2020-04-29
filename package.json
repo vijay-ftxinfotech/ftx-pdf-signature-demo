@@ -9,7 +9,7 @@
     "express": "^4.15.2",
     "hummus": "^1.0.78",
     "lodash": "^4.17.4",
-    "mongoose": "^4.11.1",
+    "mongoose": "^5.7.5",
     "object-assign": "^4.0.1",
     "pdf-merge": "^1.0.0",
     "pdf2json": "^1.1.7",
