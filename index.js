@@ -83,11 +83,11 @@ app.post('/download', function(req, res) {
                             height: element.height
                         }
                     });
-                    cxt.drawRectangle(element.x, (pdf_height - element.y) - element.height, element.width, element.height, {
-                        type: 'stroke',
-                        color: 'red',
-                        width: 1,
-                    });
+                    // cxt.drawRectangle(element.x, (pdf_height - element.y) - element.height, element.width, element.height, {
+                    //     type: 'stroke',
+                    //     color: 'red',
+                    //     width: 1,
+                    // });
                 } else if (element.type == 'drawing') {
                     var singleLines = Array.prototype.concat.apply([], element.lines);
                     for (var i = 0; i <= singleLines.length; i = i + 1) {
