@@ -15,7 +15,7 @@
     "pdf2json": "^1.1.7",
     "pdfkit": "^0.8.3",
     "pdfreader": "^0.2.4",
-    "pug": "^2.0.0-rc.2",
+    "pug": "^3.0.1",
     "socket.io": "^1.7.3"
   },
   "devDependencies": {
