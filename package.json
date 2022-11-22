@@ -16,7 +16,7 @@
     "pdfkit": "^0.8.3",
     "pdfreader": "^0.2.4",
     "pug": "^2.0.0-rc.2",
-    "socket.io": "^1.7.3"
+    "socket.io": "^4.5.3"
   },
   "devDependencies": {
     "babel-core": "6.7.4",
@@ -27,7 +27,7 @@
     "coveralls": "^2.11.9",
     "express": "^4.15.3",
     "istanbul-instrumenter-loader": "^0.2.0",
-    "karma": "^0.13.22",
+    "karma": "^6.4.1",
     "karma-cli": "^0.1.2",
     "karma-coverage": "^0.5.5",
     "karma-firefox-launcher": "^0.1.7",
